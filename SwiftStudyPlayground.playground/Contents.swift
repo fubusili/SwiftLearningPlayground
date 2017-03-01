@@ -223,9 +223,9 @@ let widthLabel = label + String(width)
 
 let heartString = "\\u2665"
 
-let upperString = widthLabel.uppercaseString
+let upperString = widthLabel.uppercased()
 
-let lowerString = upperString.lowercaseString
+let lowerString = upperString.lowercased()
 
 let apples:NSInteger = 3
 let oranges = 5
@@ -236,7 +236,7 @@ let sayHelloToLily = "hello, lily get you \(fuckTimes) times"
 
 var shopingList = ["catfish", "water", "tulips", "bule paint"]
 print("\(shopingList.count)")
-shopingList.insert("hello kitty", atIndex: shopingList.count)
+shopingList.insert("hello kitty", at: shopingList.count)
 shopingList[0] = "hello kitty"
 shopingList.append("纳尼")
 shopingList
@@ -277,7 +277,7 @@ for (key, value) in emptyDictionary {
 
     print("\(key),\(value)")
 }
-if let removeValue = emptyDictionary.removeValueForKey("") {
+if let removeValue = emptyDictionary.removeValue(forKey: "") {
 
     print("the remove value is \(removeValue)")
     
@@ -286,7 +286,7 @@ if let removeValue = emptyDictionary.removeValueForKey("") {
     print("the emptyDictionary does not containt a vale for \"\"")
 }
 
-var emptyArray = ["2",2]
+var emptyArray = ["2",2] as [Any]
 emptyArray.append("hello")
 if emptyArray.isEmpty {
 
@@ -386,8 +386,14 @@ func greet(name: String, day: String) -> String {
     return "Hello \(name), today is \(day)"
 }
 
-greet("mengmeng", day: "2016")
+greet(name:"mengmeng", day: "2016")
 
+
+func greet_hello(_ person: String, on day: String) -> String {
+    return "hello \(person), today is \(day)"
+}
+
+greet_hello("kimili", on: "Tuesday")
 class Responder: NSObject {
     func tap() {
         print("Button pressed")
@@ -395,16 +401,81 @@ class Responder: NSObject {
 }
 let responder = Responder()
 
-let  buttton = UIButton(type: .System)
-buttton.setTitle("button", forState: .Normal)
-buttton.addTarget(responder, action: #selector(Responder.tap), forControlEvents: .TouchUpInside)
+let  buttton = UIButton(type: .custom)
+buttton.setTitle("button", for: .normal)
+buttton.addTarget(responder, action: #selector(Responder.tap), for: .touchUpInside)
 buttton.sizeToFit()
 buttton.center = CGPoint(x: 50, y: 25)
 
-let  frame = CGRectMake(0, 0, 100, 50)
+let  frame = CGRect(x: 0, y: 0, width: 100, height: 50)
 let  view = UIView(frame: frame)
-view.addSubview(buttton)  
+view.addSubview(buttton)
 
+func sumOf(numbers: Int...) -> Int {
+//    var sum = 0
+//    for number in numbers {
+//        sum += number
+//    }
+    return numbers.reduce(0, +)
+}
 
+sumOf()
+sumOf(numbers: 1, 2, 3, 4, 5)
 
+func avarageNumbers(numbers: Int...) -> Int {
+    var sum = 0
+    for number in numbers {
+        sum += number
+    }
+    return sum / numbers.count
+}
 
+avarageNumbers(numbers: 34, 2)
+
+func returnFifteen() -> Int {
+    var y = 10
+    func add() {
+        y += 5
+    }
+    add()
+    return y
+}
+
+returnFifteen()
+
+func makeIncrementer() -> ((Int) -> Int) {
+    func addOne(number: Int) -> Int {
+        return 1 + number
+    }
+    return addOne
+}
+
+var increment = makeIncrementer()
+increment(7)
+
+func hasAnyMatches(list: [Int], condition: (Int) -> Bool) -> Bool {
+    for item in list {
+        if condition(item) {
+            return true
+        }
+    }
+    return false
+}
+
+func lessThanTen(number: Int) -> Bool {
+    return number < 10
+}
+
+var numbers = [10, 19, 70, 12]
+hasAnyMatches(list: numbers, condition: lessThanTen)
+
+numbers.map { (number: Int) -> Int in
+    let result = 2 * number
+    return result
+}
+
+let mappedNumbers = numbers.map { number in 2 * number }
+print(mappedNumbers)
+
+let sortedNumbers = numbers.sort { $0 > $1 }
+print(sortedNumbers)
